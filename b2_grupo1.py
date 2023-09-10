@@ -1,7 +1,8 @@
 '''
 Algoritmo calculo_lancamento_obliquo_por_metodo_de_newton
 Situação Integradora EsPCEx 11/08/2023
-Turma B2 - Grupo 1
+7º Pelotão - Turma B2
+Grupo 1
 6153 Barreto
 7035 Zefiro
 7230 Rezende Silva
@@ -11,37 +12,39 @@ Turma B2 - Grupo 1
 7832 Vitória Gomes
 '''
 #Bibliotecas
+#Biblioteca 'math' é necessária para usar as funções 'tan', 'radians', 'cos' e 'log'
 import math
-
-#Funçoes
-#Função que converte graus em radianos
-def convercao_graus_rad(angulo_graus):
-    angulo_rad=math.radians(angulo_graus)
-    return angulo_rad
-#Função que calcula o limite por definição
-#Método de Newton
-#def metodo_newton(palpite,iteracoes):
-    
 
 #Entrada de Dados
 #Entrada dos parâmetros da função
 angulo_lancamento=float(input("Digite o ângulo de lançamento (em graus): "))
-velocidade_inicial=float(input("Digite a velocidade incial: "))
-gravidade=float(input("Digite o valor da gravidade: "))
-altura_inicial=float(input("Digite a altura inicial do lançamento: "))
-coeficiente_arrasto=float(input("Digite o coeficiente de arrasto: "))
+velocidade_inicial=float(input("Digite a velocidade incial (em m/s): "))
+gravidade=float(input("Digite o valor da gravidade (em m/s^2): "))
+altura_inicial=float(input("Digite a altura inicial do lançamento (em m): "))
+coeficiente_arrasto=float(input("Digite o coeficiente de arrasto (s^-1): "))
+
 #Entrada do parâmetros do método de newton
-valor_inicial=float(input("Digite um valor inicial aproximado para o alcance: "))
-numero_iteracoes=float(input("Digite o número de iterações desejada: "))
-x=float(0)
-#Resultado final
-resultado_final=float(0)
+#a função comentada a seguir calcula o valor ideal para o valor inicial
+#valor_inicial=(velocidade_inicial**2)*math.sin(math.radians(2*coeficiente_arrasto))/((2*math.sin(math.radians(coeficiente_arrasto))*coeficiente_arrasto*velocidade_inicial+gravidade))
+valor_inicial=float(input("Digite um valor inicial aproximado para o alcance (em m): "))
+numero_iteracoes=int(input("Digite o número de iterações desejadas: "))
 
-#Processamento
-angulo_lancamento=convercao_graus_rad(angulo_lancamento)
-#Chamar a função metodo de newton
-
-#Fórmula do lançamento oblíquo
-for i in range(0,numero_iteracoes):
-    resultado_final=float(altura_inicial+(math.tan(angulo_lancamento)+(gravidade/(coeficiente_arrasto*velocidade_inicial*math.cos(angulo_lancamento))))*x+(gravidade/coeficiente_arrasto**2)*math.log(1-coeficiente_arrasto/(velocidade_inicial*math.cos(angulo_lancamento))*x))
-    print(resultado_final)
+#A estrutura de repetição 'for' será repetida o tanto de vezes que o usuário digitar
+for i in range (1,numero_iteracoes):
+  #define a função do lançamento oblíquo
+  funcao=altura_inicial+(math.tan(math.radians(angulo_lancamento))+(gravidade/(coeficiente_arrasto*velocidade_inicial*math.cos(math.radians(angulo_lancamento)))))*valor_inicial+gravidade*math.log(1-(coeficiente_arrasto*valor_inicial/(velocidade_inicial*math.cos(math.radians(angulo_lancamento)))))/coeficiente_arrasto**2
+  #deriva a função, aplicando o método de newton
+  derivada=(math.tan(math.radians(angulo_lancamento))+gravidade/(coeficiente_arrasto*velocidade_inicial*math.cos(math.radians(coeficiente_arrasto))))-gravidade/(coeficiente_arrasto*(velocidade_inicial*math.cos(math.radians(angulo_lancamento))-coeficiente_arrasto*valor_inicial))
+  #atualiza o 'valor_inicial', de modo que ele se torne cada vez mais perto da aproximação real
+  valor_inicial=valor_inicial-(funcao/derivada)
+  #imprime o resultado de cada iteração, indicando o número da iteração
+  print("Iteração número",i,"alcance =",valor_inicial,"m")
+'''
+TESTE 01:
+angulo_lancamento=34.5
+velocidade_inicial=123.4
+gravidade=9.78
+altura_inicial=2.45
+coeficiente_arrasto=0.03
+valor_inicial=1124
+'''
