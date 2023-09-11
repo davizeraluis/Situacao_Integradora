@@ -47,4 +47,5 @@ gravidade=9.78
 altura_inicial=2.45
 coeficiente_arrasto=0.03
 valor_inicial=1124
+reposta esperada: 1124.78
 '''
